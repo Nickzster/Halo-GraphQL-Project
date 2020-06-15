@@ -1,14 +1,15 @@
 import {
   GraphQLObjectType,
   GraphQLList,
-  GraphQLNonNull,
   GraphQLInt,
+  GraphQLString,
 } from "graphql";
 import { CharacterSchema } from "../Schemas/Characters";
 import { AssociationSchema } from "../Schemas/Associations";
 import { TypeSchema } from "../Schemas/Types";
 import { characters, associations, types } from "../Data";
 
+//Queries will need some sort of resolving going on
 export const RootQuerySchema = new GraphQLObjectType({
   name: "Query",
   description: "Root Query",
@@ -53,6 +54,26 @@ export const RootQuerySchema = new GraphQLObjectType({
         id: { type: GraphQLInt },
       },
       resolve: (parents, args) => types.find((type) => type.id === args.id),
+    },
+    characterAssociations: {
+      type: GraphQLList(CharacterSchema),
+      description: "Character Associations",
+      args: {
+        association: { type: GraphQLString },
+      },
+      resolve: (parents, args) =>
+        characters.filter(
+          (character) => character.association === args.association
+        ),
+    },
+    characterType: {
+      type: GraphQLList(CharacterSchema),
+      description: "Character Types",
+      args: {
+        type: { type: GraphQLString },
+      },
+      resolve: (parents, args) =>
+        characters.filter((character) => character.type === args.type),
     },
   }),
 });

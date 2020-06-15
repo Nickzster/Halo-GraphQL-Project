@@ -5,6 +5,7 @@ import {
   GraphQLInt,
 } from "graphql";
 
+// Schemas generally do not need any resolving
 export const AssociationSchema = new GraphQLObjectType({
   name: "association",
   description:
